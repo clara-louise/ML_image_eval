@@ -10,7 +10,7 @@ np.set_printoptions(suppress=True)
 model = tensorflow.keras.models.load_model('converted_keras/keras_model.h5')
 
 
-def predict_dog(image_path):
+def predict_image_class(image_path):
     # returns a prediction [[]]
 
     # Create the array of the right shape to feed into the keras model
@@ -43,19 +43,10 @@ def predict_dog(image_path):
     return prediction
 
 
-cardigan_paths = os.listdir(
-    "/Users/maboko/Documents/Ada/MLDogs/test_data/Cardigan")
+test_classes = (os.listdir("test_data/"))
 
-dingo_paths = os.listdir(
-    "/Users/maboko/Documents/Ada/MLDogs/test_data/Dingo")
-
-# TODO: Loop through all the images and get predictions for each, then calculate metrics.
-print("Misclassified Cardis:")
-for cardi in cardigan_paths:
-    if predict_dog("/Users/maboko/Documents/Ada/MLDogs/test_data/Cardigan/" + cardi)[0][1] < 0.5:
-        print(cardi)
-
-print("Misclassified Dingos:")
-for dingo in dingo_paths:
-    if predict_dog("/Users/maboko/Documents/Ada/MLDogs/test_data/Dingo/" + dingo)[0][0] < 0.5:
-        print(dingo)
+for test_class in test_classes:
+    print(test_class)
+    for image in os.listdir("test_data/" + test_class):
+        print(image)
+        print(predict_image_class("test_data/" + test_class + "/" + image))
