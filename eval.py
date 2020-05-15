@@ -43,10 +43,22 @@ def predict_image_class(image_path):
     return prediction
 
 
-test_classes = (os.listdir("test_data/"))
+f = open("converted_keras/labels.txt", "r")
+predicted_classes = []
+for line in f:
+    predicted_classes.append(line.split()[1])
 
+
+test_classes = (os.listdir("test_data/"))
 for test_class in test_classes:
-    print(test_class)
+    print(test_class + " test images, predicted class and score")
     for image in os.listdir("test_data/" + test_class):
-        print(image)
-        print(predict_image_class("test_data/" + test_class + "/" + image))
+        prediction = predict_image_class(
+            "test_data/" + test_class + "/" + image)
+
+        if prediction[0][0] > prediction[0][1]:
+            print(image + ', ' +
+                  predicted_classes[0] + ', ' + str(prediction[0][0]))
+        else:
+            print(image + ', ' +
+                  predicted_classes[1] + ', ' + str(prediction[0][1]))
