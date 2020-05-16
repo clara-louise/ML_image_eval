@@ -50,19 +50,23 @@ for line in f:
 
 
 test_classes = (os.listdir("test_data/"))
+counts_per_test_classes = {}
+
 for test_class in test_classes:
     counts = {predicted_classes[0]: 0, predicted_classes[1]: 0}
     print(test_class + " test images, predicted class and score")
     for image in os.listdir("test_data/" + test_class):
         prediction = predict_image_class(
-            "test_data/" + test_class + "/" + image)
+            "test_data/" + test_class + "/" + image)[0]
 
-        if prediction[0][0] > prediction[0][1]:
-            print(image + ', ' +
-                  predicted_classes[0] + ', ' + str(prediction[0][0]))
-            counts[predicted_classes[0]] = counts[predicted_classes[0]] + 1
-        else:
-            print(image + ', ' +
-                  predicted_classes[1] + ', ' + str(prediction[0][1]))
-            counts[predicted_classes[1]] = counts[predicted_classes[1]] + 1
-    print(counts)
+        max_value = max(prediction)
+        i_of_max = [i for i, j in enumerate(prediction) if j == max_value]
+        # Assuming that there is only one max, which may not always be true
+        predicted_class = predicted_classes[i_of_max[0]]
+        # uncomment below to get detailed predictions
+        #print(image, predicted_class, max_value)
+        counts[predicted_class] = counts[predicted_class] + 1
+
+    counts_per_test_classes[test_class] = counts
+
+print(counts_per_test_classes)
