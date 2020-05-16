@@ -53,8 +53,8 @@ test_classes = (os.listdir("test_data/"))
 counts_per_test_classes = {}
 
 for test_class in test_classes:
-    counts = {predicted_classes[0]: 0, predicted_classes[1]: 0}
-    print(test_class + " test images, predicted class and score")
+    counts = {}
+    print(test_class + " images, predicted class and score")
     for image in os.listdir("test_data/" + test_class):
         prediction = predict_image_class(
             "test_data/" + test_class + "/" + image)[0]
@@ -64,8 +64,12 @@ for test_class in test_classes:
         # Assuming that there is only one max, which may not always be true
         predicted_class = predicted_classes[i_of_max[0]]
         # uncomment below to get detailed predictions
-        #print(image, predicted_class, max_value)
-        counts[predicted_class] = counts[predicted_class] + 1
+        print(image, predicted_class, max_value)
+
+        if predicted_class not in counts:
+            counts[predicted_class] = 1
+        else:
+            counts[predicted_class] = counts[predicted_class] + 1
 
     counts_per_test_classes[test_class] = counts
 
